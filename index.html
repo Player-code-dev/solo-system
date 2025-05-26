@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solo Leveling System</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style/style.css" />
+  <link rel="stylesheet" href="style/glitch.css" />
+  <link rel="stylesheet" href="style/status.css" />
+  <link rel="stylesheet" href="style/xp.css" />
+
+  <style>
+    /* Neon blue & purple color glow animations */
+    @keyframes neonGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 8px #0ff,
+          0 0 16px #0ff,
+          0 0 32px #0ff,
+          0 0 64px #8ff,
+          0 0 128px #8ff;
+        color: #0ff;
+      }
+      50% {
+        text-shadow:
+          0 0 12px #c0f,
+          0 0 24px #c0f,
+          0 0 48px #c0f,
+          0 0 96px #f0f,
+          0 0 192px #f0f;
+        color: #c0f;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #05070a, #001320);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      color: #00ffff;
+      user-select: none;
+    }
+
+    .hud-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+      padding: 20px 40px;
+      gap: 15px;
+      backdrop-filter: blur(15px);
+      background: rgba(0, 10, 20, 0.6);
+      border: 1px solid #00ffff44;
+      box-shadow: 0 0 30px #00ffff88;
+      position: relative;
+    }
+
+    /* Top header with system name and level */
+    .hud-header {
+      grid-column: 1 / 4;
+      text-align: center;
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      animation: neonGlow 5s infinite alternate ease-in-out;
+      user-select: none;
+      position: relative;
+      text-shadow:
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 40px #00ffff;
+    }
+
+    /* Blurred translucent panel style */
+    .panel {
+      background: rgba(10, 30, 50, 0.7);
+      border: 1px solid #00ffff55;
+      border-radius: 12px;
+      box-shadow:
+        0 0 15px #00ffff77,
+        inset 0 0 10px #00ffff33;
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    /* Stats panel */
+    #stats-panel {
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      letter-spacing: 1.5px;
+      border-left: 3px solid #00ffffaa;
+      box-shadow: 0 0 20px #00ffffaa;
+    }
+
+    /* Quests panel */
+    #quests-panel {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      font-size: 1.1rem;
+      border-left: 3px solid #00ffffaa;
+      box-shadow: 0 0 20px #00ffffaa;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+
+    /* Quest glitch effect */
+    .quest-title {
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: #00ffff;
+      animation: glitch 2.5s infinite;
+      user-select: none;
+    }
+
+    /* Status panel */
+    #status-panel {
+      grid-column: 3 / 4;
+      grid-row: 2 / 3;
+      font-size: 1.2rem;
+      letter-spacing: 1.5px;
+      border-left: 3px solid #00ffffaa;
+      box-shadow: 0 0 20px #00ffffaa;
+      user-select: none;
+    }
+
+    /* Footer XP bar */
+    #xp-bar-container {
+      grid-column: 1 / 4;
+      grid-row: 3 / 4;
+      position: relative;
+      height: 24px;
+      background: #002233;
+      border-radius: 12px;
+      box-shadow: inset 0 0 8px #00ffff99;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #xp-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00ffffcc, #4400ffcc);
+      box-shadow:
+        0 0 12px #00ffffcc,
+        0 0 20px #00ffffcc inset;
+      transition: width 1.5s ease-in-out;
+    }
+
+    /* System messages (glitch popup) */
+    #system-message {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #00ffff;
+      text-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 40px #00ffff;
+      animation: glitch 3s infinite;
+      pointer-events: none;
+      user-select: none;
+      z-index: 999;
+    }
+
+    /* Glitch animation */
+    @keyframes glitch {
+      0% {
+        text-shadow:
+          2px 0 #0ff,
+          -2px 0 #f0f;
+      }
+      20% {
+        text-shadow:
+          -2px 0 #0ff,
+          2px 0 #f0f;
+      }
+      40% {
+        text-shadow:
+          2px 2px #0ff,
+          -2px -2px #f0f;
+      }
+      60% {
+        text-shadow:
+          -2px -2px #0ff,
+          2px 2px #f0f;
+      }
+      80% {
+        text-shadow:
+          2px 0 #0ff,
+          -2px 0 #f0f;
+      }
+      100% {
+        text-shadow:
+          -2px 0 #0ff,
+          2px 0 #f0f;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hud-container">
+    <header class="hud-header">SYSTEM</header>
+
+    <section id="stats-panel" class="panel">
+      <h2>STATUS</h2>
+      <p><strong>Level:</strong> <span id="level">1</span></p>
+      <p><strong>XP:</strong> <span id="xp">0 / 100</span></p>
+      <p><strong>Strength:</strong> <span id="stat-strength">5</span></p>
+      <p><strong>Agility:</strong> <span id="stat-agility">5</span></p>
+      <p><strong>Intelligence:</strong> <span id="stat-intelligence">5</span></p>
+      <p><strong>Endurance:</strong> <span id="stat-endurance">5</span></p>
+      <p><strong>Faith:</strong> <span id="stat-faith">5</span></p>
+    </section>
+
+    <section id="quests-panel" class="panel">
+      <h2>QUESTS</h2>
+      <div id="quest-list">
+        <!-- Quests will be dynamically inserted here -->
+        <p class="quest-title glitch">Loading quests...</p>
+      </div>
+    </section>
+
+    <section id="status-panel" class="panel">
+      <h2>COMBAT & TACTICS</h2>
+      <p>Reaction Speed: <span id="reaction-speed">0</span></p>
+      <p>Awareness: <span id="awareness">0</span></p>
+      <p>Tactical IQ: <span id="tactical-iq">0</span></p>
+    </section>
+
+    <div id="xp-bar-container">
+      <div id="xp-bar"></div>
+    </div>
+
+    <div id="system-message" aria-live="polite" role="alert" style="display:none;"></div>
+  </div>
+
+  <!-- Audio elements preloaded -->
+  <audio id="audio-xp-gain" src="audio/xp-gain.mp3" preload="auto"></audio>
+  <audio id="audio-level-up" src="audio/level-up.mp3" preload="auto"></audio>
+  <audio id="audio-quest-notification" src="audio/quest-notification.mp3" preload="auto"></audio>
+
+  <script src="js/script.js"></script>
+  <script src="js/status-logic.js"></script>
+  <script src="js/status-engine.js"></script>
+  <script src="js/xp.js"></script>
+  <script src="js/xp-effect.js"></script>
+  <script src="js/penalty-system.js"></script>
+  <script src="js/quest-generator.js"></script>
+</body>
+</html>
