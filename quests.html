@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quests - Solo Leveling System</title>
+    <meta name="theme-color" content="#00d4ff">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glitch.css">
+</head>
+<body class="quests-body">
+    <!-- Quest Page Header -->
+    <header class="quest-header">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i>
+            <span>BACK</span>
+        </button>
+        <h1 class="glitch-text" data-text="QUEST MANAGEMENT">QUEST MANAGEMENT</h1>
+    </header>
+
+    <!-- Quest Interface -->
+    <main class="quest-interface">
+        <!-- Quest Categories -->
+        <section class="quest-categories">
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="daily">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>DAILY QUESTS</span>
+                    <div class="tab-indicator"></div>
+                </button>
+                <button class="category-tab" data-category="weekly">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>WEEKLY QUESTS</span>
+                    <div class="tab-indicator"></div>
+                </button>
+                <button class="category-tab" data-category="special">
+                    <i class="fas fa-star"></i>
+                    <span>SPECIAL EVENTS</span>
+                    <div class="tab-indicator"></div>
+                </button>
+                <button class="category-tab" data-category="completed">
+                    <i class="fas fa-check-circle"></i>
+                    <span>COMPLETED</span>
+                    <div class="tab-indicator"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Quest List Container -->
+        <section class="quest-container">
+            <!-- Daily Quests -->
+            <div class="quest-section active" id="dailyQuests">
+                <div class="section-header">
+                    <h2>Daily Quests</h2>
+                    <div class="quest-timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="dailyResetTimer">Resets in: 12:34:56</span>
+                    </div>
+                </div>
+                <div class="quest-grid" id="dailyQuestGrid">
+                    <!-- Daily quests will be populated here -->
+                </div>
+            </div>
+
+            <!-- Weekly Quests -->
+            <div class="quest-section hidden" id="weeklyQuests">
+                <div class="section-header">
+                    <h2>Weekly Quests</h2>
+                    <div class="quest-timer">
+                        <i class="fas fa-calendar"></i>
+                        <span id="weeklyResetTimer">Resets in: 3 days</span>
+                    </div>
+                </div>
+                <div class="quest-grid" id="weeklyQuestGrid">
+                    <!-- Weekly quests will be populated here -->
+                </div>
+            </div>
+
+            <!-- Special Events -->
+            <div class="quest-section hidden" id="specialQuests">
+                <div class="section-header">
+                    <h2>Special Events</h2>
+                    <div class="event-status">
+                        <i class="fas fa-magic"></i>
+                        <span>Active Events: 2</span>
+                    </div>
+                </div>
+                <div class="quest-grid" id="specialQuestGrid">
+                    <!-- Special quests will be populated here -->
+                </div>
+            </div>
+
+            <!-- Completed Quests -->
+            <div class="quest-section hidden" id="completedQuests">
+                <div class="section-header">
+                    <h2>Completed Quests</h2>
+                    <div class="completion-stats">
+                        <span id="completionRate">Completion Rate: 85%</span>
+                    </div>
+                </div>
+                <div class="quest-grid" id="completedQuestGrid">
+                    <!-- Completed quests will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quest Details Modal -->
+        <div class="quest-modal hidden" id="questModal">
+            <div class="modal-backdrop" onclick="closeQuestModal()"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalQuestTitle">Quest Title</h3>
+                    <button class="close-btn" onclick="closeQuestModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="quest-description" id="modalQuestDescription">
+                        Quest description goes here...
+                    </div>
+                    <div class="quest-requirements" id="modalQuestRequirements">
+                        <h4>Requirements:</h4>
+                        <ul></ul>
+                    </div>
+                    <div class="quest-rewards" id="modalQuestRewards">
+                        <h4>Rewards:</h4>
+                        <div class="reward-list"></div>
+                    </div>
+                    <div class="quest-progress" id="modalQuestProgress">
+                        <h4>Progress:</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">0 / 1</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="quest-action-btn" id="questActionBtn">ACCEPT QUEST</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Emergency Quest Notification -->
+    <div class="emergency-quest hidden" id="emergencyQuest">
+        <div class="emergency-frame">
+            <div class="emergency-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="glitch-text" data-text="EMERGENCY QUEST">EMERGENCY QUEST</span>
+            </div>
+            <div class="emergency-content">
+                <h3 id="emergencyTitle">Sudden Challenge Appeared!</h3>
+                <p id="emergencyDescription">A sudden opportunity for growth has appeared...</p>
+                <div class="emergency-timer">
+                    Time Remaining: <span id="emergencyTimer">05:00</span>
+                </div>
+            </div>
+            <div class="emergency-actions">
+                <button class="emergency-accept" id="acceptEmergency">ACCEPT</button>
+                <button class="emergency-decline" id="declineEmergency">DECLINE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/quest-generator.js"></script>
+    <script src="audio.js"></script>
+    <script>
+        let currentCategory = 'daily';
+        let emergencyQuestTimer = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeQuestPage();
+            loadQuests();
+            setupTimers();
+            checkForEmergencyQuests();
+        });
+
+        function initializeQuestPage() {
+            // Setup category tab listeners
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchCategory(this.dataset.category);
+                });
+            });
+
+            // Setup emergency quest listeners
+            document.getElementById('acceptEmergency').addEventListener('click', acceptEmergencyQuest);
+            document.getElementById('declineEmergency').addEventListener('click', declineEmergencyQuest);
+        }
+
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            // Update active section
+            document.querySelectorAll('.quest-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(`${category}Quests`);
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('active');
+            
+            loadQuests();
+        }
+
+        function loadQuests() {
+            const questData = GameStorage.getQuests();
+            
+            switch(currentCategory) {
+                case 'daily':
+                    renderDailyQuests(questData.daily || []);
+                    break;
+                case 'weekly':
+                    renderWeeklyQuests(questData.weekly || []);
+                    break;
+                case 'special':
+                    renderSpecialQuests(questData.special || []);
+                    break;
+                case 'completed':
+                    renderCompletedQuests(questData.completed || []);
+                    break;
+            }
+        }
+
+        function renderDailyQuests(quests) {
+            const container = document.getElementById('dailyQuestGrid');
+            container.innerHTML = '';
+            
+            if (quests.length === 0) {
+                // Generate new daily quests if none exist
+                const newQuests = QuestGenerator.generateDailyQuests();
+                GameStorage.saveQuests({ ...GameStorage.getQuests(), daily: newQuests });
+                quests = newQuests;
+            }
+            
+            quests.forEach(quest => {
+                container.appendChild(createQuestCard(quest));
+            });
+        }
+
+        function renderWeeklyQuests(quests) {
+            const container = document.getElementById('weeklyQuestGrid');
+            container.innerHTML = '';
+            
+            quests.forEach(quest => {
+                container.appendChild(createQuestCard(quest));
+            });
+        }
+
+        function renderSpecialQuests(quests) {
+            const container = document.getElementById('specialQuestGrid');
+            container.innerHTML = '';
+            
+            quests.forEach(quest => {
+                container.appendChild(createQuestCard(quest));
+            });
+        }
+
+        function renderCompletedQuests(quests) {
+            const container = document.getElementById('completedQuestGrid');
+            container.innerHTML = '';
+            
+            quests.forEach(quest => {
+                const card = createQuestCard(quest);
+                card.classList.add('completed');
+                container.appendChild(card);
+            });
+        }
+
+        function createQuestCard(quest) {
+            const card = document.createElement('div');
+            card.className = `quest-card ${quest.difficulty} ${quest.status || 'available'}`;
+            card.innerHTML = `
+                <div class="quest-header">
+                    <div class="quest-icon">
+                        <i class="${quest.icon}"></i>
+                    </div>
+                    <div class="quest-info">
+                        <h3 class="quest-title">${quest.title}</h3>
+                        <div class="quest-category">${quest.category}</div>
+                    </div>
+                    <div class="quest-difficulty">
+                        <span class="difficulty-label">${quest.difficulty.toUpperCase()}</span>
+                    </div>
+                </div>
+                <div class="quest-description">
+                    ${quest.description}
+                </div>
+                <div class="quest-rewards">
+                    <div class="reward-item">
+                        <i class="fas fa-star"></i>
+                        <span>+${quest.xpReward} XP</span>
+                    </div>
+                    ${quest.statRewards ? Object.entries(quest.statRewards).map(([stat, value]) => 
+                        `<div class="reward-item">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+${value} ${stat.toUpperCase()}</span>
+                        </div>`
+                    ).join('') : ''}
+                </div>
+                <div class="quest-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(quest.progress / quest.maxProgress) * 100}%"></div>
+                    </div>
+                    <div class="progress-text">${quest.progress} / ${quest.maxProgress}</div>
+                </div>
+                <div class="quest-actions">
+                    ${quest.status === 'completed' ? 
+                        '<button class="quest-btn completed-btn" disabled>COMPLETED</button>' :
+                        quest.status === 'active' ?
+                        '<button class="quest-btn complete-btn" onclick="completeQuest(\'' + quest.id + '\')">COMPLETE</button>' :
+                        '<button class="quest-btn accept-btn" onclick="acceptQuest(\'' + quest.id + '\')">ACCEPT</button>'
+                    }
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function acceptQuest(questId) {
+            const questData = GameStorage.getQuests();
+            const quest = findQuestById(questId, questData);
+            
+            if (quest) {
+                quest.status = 'active';
+                quest.acceptedAt = Date.now();
+                GameStorage.saveQuests(questData);
+                
+                AudioManager.playSound('questAccept');
+                showNotification(`Quest "${quest.title}" accepted!`, 'success');
+                loadQuests();
+            }
+        }
+
+        function completeQuest(questId) {
+            const questData = GameStorage.getQuests();
+            const quest = findQuestById(questId, questData);
+            
+            if (quest && quest.status === 'active') {
+                quest.status = 'completed';
+                quest.completedAt = Date.now();
+                
+                // Award rewards
+                const playerData = GameStorage.getPlayerData();
+                const stats = GameStorage.getStats();
+                
+                // Award XP
+                const newXP = playerData.xp + quest.xpReward;
+                playerData.xp = newXP;
+                
+                // Award stat bonuses
+                if (quest.statRewards) {
+                    Object.entries(quest.statRewards).forEach(([stat, value]) => {
+                        stats[stat] = (stats[stat] || 10) + value;
+                    });
+                }
+                
+                // Move to completed
+                if (!questData.completed) questData.completed = [];
+                questData.completed.push(quest);
+                
+                // Remove from current category
+                if (questData[currentCategory]) {
+                    questData[currentCategory] = questData[currentCategory].filter(q => q.id !== questId);
+                }
+                
+                GameStorage.savePlayerData(playerData);
+                GameStorage.saveStats(stats);
+                GameStorage.saveQuests(questData);
+                
+                AudioManager.playSound('questComplete');
+                showNotification(`Quest "${quest.title}" completed! +${quest.xpReward} XP`, 'success');
+                loadQuests();
+            }
+        }
+
+        function findQuestById(questId, questData) {
+            for (const category of ['daily', 'weekly', 'special', 'completed']) {
+                if (questData[category]) {
+                    const quest = questData[category].find(q => q.id === questId);
+                    if (quest) return quest;
+                }
+            }
+            return null;
+        }
+
+        function setupTimers() {
+            updateDailyTimer();
+            updateWeeklyTimer();
+            setInterval(updateDailyTimer, 1000);
+            setInterval(updateWeeklyTimer, 60000);
+        }
+
+        function updateDailyTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const timeLeft = tomorrow - now;
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            const timerElement = document.getElementById('dailyResetTimer');
+            if (timerElement) {
+                timerElement.textContent = `Resets in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function updateWeeklyTimer() {
+            const now = new Date();
+            const nextWeek = new Date(now);
+            nextWeek.setDate(nextWeek.getDate() + (7 - now.getDay()));
+            nextWeek.setHours(0, 0, 0, 0);
+            
+            const timeLeft = nextWeek - now;
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            
+            const timerElement = document.getElementById('weeklyResetTimer');
+            if (timerElement) {
+                timerElement.textContent = `Resets in: ${days} day${days !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function checkForEmergencyQuests() {
+            // Random chance for emergency quest every 30 minutes
+            setInterval(() => {
+                if (Math.random() < 0.1) { // 10% chance
+                    triggerEmergencyQuest();
+                }
+            }, 30 * 60 * 1000);
+        }
+
+        function triggerEmergencyQuest() {
+            const emergencyQuests = [
+                {
+                    title: "Nafs Suppression Challenge",
+                    description: "Resist a strong desire or temptation for the next 5 minutes",
+                    duration: 5 * 60 * 1000,
+                    xpReward: 50,
+                    statRewards: { faith: 2 }
+                },
+                {
+                    title: "Instant Dhikr Session",
+                    description: "Recite 'SubhanAllah' 100 times within 5 minutes",
+                    duration: 5 * 60 * 1000,
+                    xpReward: 30,
+                    statRewards: { faith: 1 }
+                }
+            ];
+            
+            const quest = emergencyQuests[Math.floor(Math.random() * emergencyQuests.length)];
+            showEmergencyQuest(quest);
+        }
+
+        function showEmergencyQuest(quest) {
+            document.getElementById('emergencyTitle').textContent = quest.title;
+            document.getElementById('emergencyDescription').textContent = quest.description;
+            document.getElementById('emergencyQuest').classList.remove('hidden');
+            
+            let timeLeft = quest.duration / 1000;
+            emergencyQuestTimer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('emergencyTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(emergencyQuestTimer);
+                    hideEmergencyQuest();
+                }
+            }, 1000);
+            
+            window.currentEmergencyQuest = quest;
+        }
+
+        function acceptEmergencyQuest() {
+            if (window.currentEmergencyQuest) {
+                const quest = window.currentEmergencyQuest;
+                quest.id = 'emergency_' + Date.now();
+                quest.status = 'active';
+                quest.category = 'Emergency';
+                quest.icon = 'fas fa-exclamation-triangle';
+                quest.difficulty = 'hard';
+                quest.progress = 0;
+                quest.maxProgress = 1;
+                
+                const questData = GameStorage.getQuests();
+                if (!questData.special) questData.special = [];
+                questData.special.push(quest);
+                GameStorage.saveQuests(questData);
+                
+                AudioManager.playSound('emergencyQuest');
+                showNotification('Emergency quest accepted!', 'warning');
+                hideEmergencyQuest();
+            }
+        }
+
+        function declineEmergencyQuest() {
+            // Small penalty for declining emergency quest
+            const playerData = GameStorage.getPlayerData();
+            playerData.xp = Math.max(0, playerData.xp - 10);
+            GameStorage.savePlayerData(playerData);
+            
+            showNotification('Emergency quest declined. -10 XP', 'error');
+            hideEmergencyQuest();
+        }
+
+        function hideEmergencyQuest() {
+            document.getElementById('emergencyQuest').classList.add('hidden');
+            if (emergencyQuestTimer) {
+                clearInterval(emergencyQuestTimer);
+                emergencyQuestTimer = null;
+            }
+            window.currentEmergencyQuest = null;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

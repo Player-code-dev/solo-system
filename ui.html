@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD Overlay - Solo Leveling System</title>
+    <meta name="theme-color" content="#00d4ff">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glitch.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .hud-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .hud-element {
+            pointer-events: auto;
+        }
+        
+        .mini-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .mini-hp-mp {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 200px;
+        }
+        
+        .mini-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mini-bar-fill {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .mini-bar-progress {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .hp-bar .mini-bar-progress {
+            background: linear-gradient(90deg, #ff4757, #ff6b7a);
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+        
+        .mp-bar .mini-bar-progress {
+            background: linear-gradient(90deg, #3742fa, #5352ed);
+            box-shadow: 0 0 10px rgba(55, 66, 250, 0.5);
+        }
+        
+        .mini-bar-text {
+            color: white;
+            font-size: 12px;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .mini-level {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .mini-level-text {
+            color: var(--primary-blue);
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .mini-level-number {
+            color: white;
+            font-size: 24px;
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--primary-blue);
+        }
+        
+        .quest-tracker {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            max-width: 300px;
+        }
+        
+        .tracker-header {
+            color: var(--primary-blue);
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .tracked-quest {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+        
+        .tracked-quest-title {
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .tracked-quest-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tracked-progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .tracked-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-purple));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .tracked-progress-text {
+            color: #ccc;
+            font-size: 10px;
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .floating-notifications {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .floating-notification {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            animation: slideInUp 0.3s ease;
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .floating-notification.success {
+            border-color: #2ed573;
+            box-shadow: 0 0 20px rgba(46, 213, 115, 0.3);
+        }
+        
+        .floating-notification.warning {
+            border-color: #ffa502;
+            box-shadow: 0 0 20px rgba(255, 165, 2, 0.3);
+        }
+        
+        .floating-notification.error {
+            border-color: #ff4757;
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+        }
+        
+        .prayer-reminder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #2ed573;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(46, 213, 115, 0.5);
+            text-align: center;
+            color: white;
+            max-width: 400px;
+        }
+        
+        .prayer-icon {
+            font-size: 48px;
+            color: #2ed573;
+            margin-bottom: 15px;
+        }
+        
+        .prayer-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .prayer-time {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .prayer-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .prayer-btn {
+            padding: 10px 20px;
+            border: 2px solid #2ed573;
+            background: transparent;
+            color: #2ed573;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .prayer-btn:hover {
+            background: #2ed573;
+            color: black;
+            box-shadow: 0 0 15px rgba(46, 213, 115, 0.5);
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-overlay">
+        <!-- Mini Status Display -->
+        <div class="mini-status hud-element">
+            <div class="mini-hp-mp">
+                <div class="mini-bar hp-bar">
+                    <i class="fas fa-heart" style="color: #ff4757;"></i>
+                    <div class="mini-bar-fill">
+                        <div class="mini-bar-progress" id="miniHpBar" style="width: 100%;"></div>
+                    </div>
+                    <div class="mini-bar-text" id="miniHpText">100/100</div>
+                </div>
+                <div class="mini-bar mp-bar">
+                    <i class="fas fa-bolt" style="color: #3742fa;"></i>
+                    <div class="mini-bar-fill">
+                        <div class="mini-bar-progress" id="miniMpBar" style="width: 100%;"></div>
+                    </div>
+                    <div class="mini-bar-text" id="miniMpText">50/50</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mini Level Display -->
+        <div class="mini-level hud-element">
+            <div class="mini-level-text">LEVEL</div>
+            <div class="mini-level-number" id="miniLevelNumber">1</div>
+        </div>
+        
+        <!-- Quest Tracker -->
+        <div class="quest-tracker hud-element">
+            <div class="tracker-header">Active Quests</div>
+            <div id="trackedQuests">
+                <div class="tracked-quest">
+                    <div class="tracked-quest-title">Daily Exercise</div>
+                    <div class="tracked-quest-progress">
+                        <div class="tracked-progress-bar">
+                            <div class="tracked-progress-fill" style="width: 60%;"></div>
+                        </div>
+                        <div class="tracked-progress-text">3/5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Notifications -->
+        <div class="floating-notifications" id="floatingNotifications">
+            <!-- Notifications appear here dynamically -->
+        </div>
+        
+        <!-- Prayer Reminder -->
+        <div class="prayer-reminder hud-element hidden" id="prayerReminder">
+            <div class="prayer-icon">
+                <i class="fas fa-crescent-moon"></i>
+            </div>
+            <div class="prayer-text">Time for Prayer</div>
+            <div class="prayer-time" id="prayerTime">Maghrib - 6:30 PM</div>
+            <div class="prayer-actions">
+                <button class="prayer-btn" onclick="acknowledgePrayer()">Prayed</button>
+                <button class="prayer-btn" onclick="snoozePrayer()">Remind Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="audio.js"></script>
+    <script>
+        let notificationQueue = [];
+        let isShowingNotification = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeHUD();
+            updateHUDElements();
+            setInterval(updateHUDElements, 1000);
+            checkPrayerTimes();
+            setInterval(checkPrayerTimes, 60000); // Check every minute
+        });
+
+        function initializeHUD() {
+            // Listen for storage changes to update HUD
+            window.addEventListener('storage', function(e) {
+                if (e.key && e.key.startsWith('soloLeveling_')) {
+                    updateHUDElements();
+                }
+            });
+
+            // Listen for custom events from main application
+            window.addEventListener('message', function(e) {
+                if (e.data.type === 'hudUpdate') {
+                    updateHUDElements();
+                } else if (e.data.type === 'showNotification') {
+                    showFloatingNotification(e.data.message, e.data.notificationType);
+                } else if (e.data.type === 'xpGain') {
+                    showXPGainEffect(e.data.amount);
+                }
+            });
+        }
+
+        function updateHUDElements() {
+            updateMiniStatus();
+            updateMiniLevel();
+            updateQuestTracker();
+        }
+
+        function updateMiniStatus() {
+            const stats = GameStorage.getStats();
+            const playerData = GameStorage.getPlayerData();
+            
+            // Calculate HP and MP based on stats
+            const maxHP = (stats.endurance || 10) * 10;
+            const maxMP = (stats.intelligence || 10) * 5;
+            const currentHP = playerData.currentHP || maxHP;
+            const currentMP = playerData.currentMP || maxMP;
+            
+            // Update HP bar
+            const hpPercentage = (currentHP / maxHP) * 100;
+            document.getElementById('miniHpBar').style.width = `${hpPercentage}%`;
+            document.getElementById('miniHpText').textContent = `${currentHP}/${maxHP}`;
+            
+            // Update MP bar
+            const mpPercentage = (currentMP / maxMP) * 100;
+            document.getElementById('miniMpBar').style.width = `${mpPercentage}%`;
+            document.getElementById('miniMpText').textContent = `${currentMP}/${maxMP}`;
+        }
+
+        function updateMiniLevel() {
+            const playerData = GameStorage.getPlayerData();
+            document.getElementById('miniLevelNumber').textContent = playerData.level || 1;
+        }
+
+        function updateQuestTracker() {
+            const questData = GameStorage.getQuests();
+            const container = document.getElementById('trackedQuests');
+            container.innerHTML = '';
+            
+            let activeQuests = [];
+            
+            // Collect active quests from all categories
+            ['daily', 'weekly', 'special'].forEach(category => {
+                if (questData[category]) {
+                    const categoryQuests = questData[category].filter(q => q.status === 'active');
+                    activeQuests = activeQuests.concat(categoryQuests);
+                }
+            });
+            
+            // Display up to 3 active quests
+            activeQuests.slice(0, 3).forEach(quest => {
+                const questElement = document.createElement('div');
+                questElement.className = 'tracked-quest';
+                
+                const progressPercentage = (quest.progress / quest.maxProgress) * 100;
+                
+                questElement.innerHTML = `
+                    <div class="tracked-quest-title">${quest.title}</div>
+                    <div class="tracked-quest-progress">
+                        <div class="tracked-progress-bar">
+                            <div class="tracked-progress-fill" style="width: ${progressPercentage}%;"></div>
+                        </div>
+                        <div class="tracked-progress-text">${quest.progress}/${quest.maxProgress}</div>
+                    </div>
+                `;
+                
+                container.appendChild(questElement);
+            });
+            
+            if (activeQuests.length === 0) {
+                container.innerHTML = '<div style="color: #ccc; font-size: 12px; text-align: center;">No active quests</div>';
+            }
+        }
+
+        function showFloatingNotification(message, type = 'info') {
+            notificationQueue.push({ message, type });
+            processNotificationQueue();
+        }
+
+        function processNotificationQueue() {
+            if (isShowingNotification || notificationQueue.length === 0) {
+                return;
+            }
+            
+            isShowingNotification = true;
+            const { message, type } = notificationQueue.shift();
+            
+            const notification = document.createElement('div');
+            notification.className = `floating-notification ${type}`;
+            notification.textContent = message;
+            
+            const container = document.getElementById('floatingNotifications');
+            container.appendChild(notification);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideInUp 0.3s ease reverse';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                    isShowingNotification = false;
+                    processNotificationQueue();
+                }, 300);
+            }, 3000);
+        }
+
+        function showXPGainEffect(amount) {
+            // Create floating XP text effect
+            const effect = document.createElement('div');
+            effect.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #00d4ff;
+                font-size: 24px;
+                font-weight: bold;
+                text-shadow: 0 0 10px #00d4ff;
+                pointer-events: none;
+                z-index: 10000;
+                animation: xpFloat 2s ease-out forwards;
+            `;
+            effect.textContent = `+${amount} XP`;
+            
+            // Add animation keyframes if not already present
+            if (!document.getElementById('xpFloatStyle')) {
+                const style = document.createElement('style');
+                style.id = 'xpFloatStyle';
+                style.textContent = `
+                    @keyframes xpFloat {
+                        0% {
+                            opacity: 1;
+                            transform: translate(-50%, -50%) scale(1);
+                        }
+                        50% {
+                            opacity: 1;
+                            transform: translate(-50%, -70%) scale(1.2);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translate(-50%, -90%) scale(0.8);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(effect);
+            
+            setTimeout(() => {
+                if (effect.parentNode) {
+                    effect.parentNode.removeChild(effect);
+                }
+            }, 2000);
+        }
+
+        function checkPrayerTimes() {
+            const settings = GameStorage.getSettings();
+            if (!settings.prayerReminders) return;
+            
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            // Prayer times (approximate - would need location-based calculation in real app)
+            const prayerTimes = [
+                { name: 'Fajr', hour: 5, minute: 30 },
+                { name: 'Dhuhr', hour: 12, minute: 30 },
+                { name: 'Asr', hour: 15, minute: 30 },
+                { name: 'Maghrib', hour: 18, minute: 30 },
+                { name: 'Isha', hour: 20, minute: 0 }
+            ];
+            
+            prayerTimes.forEach(prayer => {
+                if (currentHour === prayer.hour && currentMinute === prayer.minute) {
+                    showPrayerReminder(prayer.name, `${prayer.hour}:${prayer.minute.toString().padStart(2, '0')}`);
+                }
+            });
+        }
+
+        function showPrayerReminder(prayerName, time) {
+            const reminder = document.getElementById('prayerReminder');
+            document.getElementById('prayerTime').textContent = `${prayerName} - ${time}`;
+            reminder.classList.remove('hidden');
+            
+            // Play prayer reminder sound
+            if (window.AudioManager) {
+                AudioManager.playSound('prayerReminder');
+            }
+        }
+
+        function acknowledgePrayer() {
+            const reminder = document.getElementById('prayerReminder');
+            reminder.classList.add('hidden');
+            
+            // Award faith XP for praying
+            const playerData = GameStorage.getPlayerData();
+            const stats = GameStorage.getStats();
+            
+            playerData.xp += 25;
+            stats.faith = (stats.faith || 10) + 1;
+            
+            GameStorage.savePlayerData(playerData);
+            GameStorage.saveStats(stats);
+            
+            showFloatingNotification('Prayer completed! +25 XP, +1 Faith', 'success');
+        }
+
+        function snoozePrayer() {
+            const reminder = document.getElementById('prayerReminder');
+            reminder.classList.add('hidden');
+            
+            // Set reminder for 10 minutes later
+            setTimeout(() => {
+                const prayerTime = document.getElementById('prayerTime').textContent;
+                showPrayerReminder(prayerTime.split(' - ')[0], 'Reminder');
+            }, 10 * 60 * 1000);
+            
+            showFloatingNotification('Prayer reminder snoozed for 10 minutes', 'warning');
+        }
+
+        // Export functions for use by parent window
+        window.HUDInterface = {
+            showNotification: showFloatingNotification,
+            showXPGain: showXPGainEffect,
+            updateHUD: updateHUDElements
+        };
+    </script>
+</body>
+</html>

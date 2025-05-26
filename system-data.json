@@ -1,0 +1,231 @@
+{
+  "questTemplates": {
+    "daily": {
+      "physical": [
+        {
+          "title": "Foundation Building",
+          "description": "Complete 3 sets of push-ups (adjust reps based on current ability)",
+          "category": "Calisthenics",
+          "xpReward": 25,
+          "statRewards": { "strength": 1, "endurance": 1 },
+          "difficulty": "easy",
+          "icon": "fas fa-dumbbell",
+          "requirements": ["Complete 3 sets", "Maintain proper form"],
+          "tips": "Focus on quality over quantity. Perfect form builds true strength."
+        },
+        {
+          "title": "Combat Reflexes",
+          "description": "Practice reaction time drills for 10 minutes using online tools or apps",
+          "category": "Combat Training",
+          "xpReward": 30,
+          "statRewards": { "agility": 2 },
+          "difficulty": "normal",
+          "icon": "fas fa-crosshairs",
+          "requirements": ["Train for 10 minutes", "Track improvement"],
+          "tips": "Consistent practice sharpens the mind and body connection."
+        },
+        {
+          "title": "Endurance Trial",
+          "description": "Hold a plank position for as long as possible, aim to beat your previous record",
+          "category": "Endurance",
+          "xpReward": 35,
+          "statRewards": { "endurance": 2, "strength": 1 },
+          "difficulty": "normal",
+          "icon": "fas fa-stopwatch",
+          "requirements": ["Beat previous record", "Maintain proper form"],
+          "tips": "Mental fortitude is tested when the body wants to give up."
+        }
+      ],
+      "spiritual": [
+        {
+          "title": "Dawn Remembrance",
+          "description": "Recite Ayat al-Kursi and reflect on its meaning for 5 minutes",
+          "category": "Dhikr & Reflection",
+          "xpReward": 40,
+          "statRewards": { "faith": 2, "intelligence": 1 },
+          "difficulty": "easy",
+          "icon": "fas fa-book-open",
+          "requirements": ["Complete recitation", "Reflect on meaning"],
+          "tips": "Understanding brings the heart closer to Allah."
+        },
+        {
+          "title": "Nafs Resistance",
+          "description": "Identify and resist one unnecessary desire today (social media, snacks, etc.)",
+          "category": "Self-Control",
+          "xpReward": 50,
+          "statRewards": { "faith": 3, "intelligence": 1 },
+          "difficulty": "hard",
+          "icon": "fas fa-shield-alt",
+          "requirements": ["Identify temptation", "Successfully resist"],
+          "tips": "The greatest jihad is against one's own nafs."
+        },
+        {
+          "title": "Knowledge Seeking",
+          "description": "Study and memorize one new hadith with its meaning and context",
+          "category": "Islamic Knowledge",
+          "xpReward": 45,
+          "statRewards": { "intelligence": 2, "faith": 2 },
+          "difficulty": "normal",
+          "icon": "fas fa-graduation-cap",
+          "requirements": ["Memorize hadith", "Understand context"],
+          "tips": "Knowledge is the believer's lost property."
+        }
+      ],
+      "mental": [
+        {
+          "title": "Strategic Planning",
+          "description": "Plan your next day in detail, including priorities and time allocation",
+          "category": "Intelligence",
+          "xpReward": 30,
+          "statRewards": { "intelligence": 2 },
+          "difficulty": "easy",
+          "icon": "fas fa-chess",
+          "requirements": ["Create detailed plan", "Set priorities"],
+          "tips": "A warrior without a plan is already defeated."
+        },
+        {
+          "title": "Problem Solving",
+          "description": "Solve 5 complex puzzles or riddles to sharpen analytical thinking",
+          "category": "Mental Training",
+          "xpReward": 25,
+          "statRewards": { "intelligence": 2 },
+          "difficulty": "normal",
+          "icon": "fas fa-puzzle-piece",
+          "requirements": ["Solve 5 puzzles", "Track completion time"],
+          "tips": "The mind is like a muscle - it grows stronger with challenge."
+        }
+      ]
+    },
+    "weekly": [
+      {
+        "title": "Quranic Marathon",
+        "description": "Read and reflect upon one complete Juz (Para) of the Quran",
+        "category": "Spiritual Growth",
+        "xpReward": 200,
+        "statRewards": { "faith": 5, "intelligence": 3 },
+        "difficulty": "hard",
+        "icon": "fas fa-book",
+        "requirements": ["Complete one Juz", "Take notes on reflections"],
+        "duration": 7
+      },
+      {
+        "title": "Combat Mastery Week",
+        "description": "Complete a full week of martial arts or self-defense training",
+        "category": "Physical Mastery",
+        "xpReward": 180,
+        "statRewards": { "strength": 3, "agility": 4, "endurance": 2 },
+        "difficulty": "hard",
+        "icon": "fas fa-fist-raised",
+        "requirements": ["Train 5 days minimum", "Learn new techniques"],
+        "duration": 7
+      }
+    ],
+    "emergency": [
+      {
+        "title": "Sudden Nafs Challenge",
+        "description": "A strong temptation has appeared. Resist it for the next 10 minutes.",
+        "category": "Emergency",
+        "xpReward": 75,
+        "statRewards": { "faith": 3 },
+        "difficulty": "hard",
+        "icon": "fas fa-exclamation-triangle",
+        "timeLimit": 600000,
+        "penalty": -20
+      },
+      {
+        "title": "Instant Dhikr Burst",
+        "description": "Recite 'SubhanAllahi wa bihamdihi' 100 times in the next 5 minutes",
+        "category": "Emergency",
+        "xpReward": 60,
+        "statRewards": { "faith": 2 },
+        "difficulty": "normal",
+        "icon": "fas fa-clock",
+        "timeLimit": 300000,
+        "penalty": -10
+      }
+    ]
+  },
+  "achievements": [
+    {
+      "id": "first_steps",
+      "name": "First Steps",
+      "description": "Complete your first quest",
+      "icon": "fas fa-baby",
+      "xpReward": 50,
+      "condition": { "type": "questsCompleted", "value": 1 }
+    },
+    {
+      "id": "dedicated_student",
+      "name": "Dedicated Student",
+      "description": "Complete 10 knowledge-based quests",
+      "icon": "fas fa-graduation-cap",
+      "xpReward": 200,
+      "condition": { "type": "categoryCompleted", "category": "knowledge", "value": 10 }
+    },
+    {
+      "id": "spiritual_warrior",
+      "name": "Spiritual Warrior",
+      "description": "Reach 50 Faith",
+      "icon": "fas fa-crescent-moon",
+      "xpReward": 300,
+      "condition": { "type": "statReached", "stat": "faith", "value": 50 }
+    },
+    {
+      "id": "level_25",
+      "name": "Rising Hunter",
+      "description": "Reach Level 25",
+      "icon": "fas fa-arrow-up",
+      "xpReward": 500,
+      "condition": { "type": "levelReached", "value": 25 }
+    }
+  ],
+  "penalties": {
+    "missedPrayer": {
+      "name": "Neglected Obligation",
+      "description": "Prayer time passed without completion",
+      "xpPenalty": -30,
+      "statPenalty": { "faith": -1 },
+      "icon": "fas fa-times-circle"
+    },
+    "failedQuest": {
+      "name": "Mission Abandoned",
+      "description": "Quest expired without completion",
+      "xpPenalty": -15,
+      "icon": "fas fa-exclamation-triangle"
+    },
+    "nafsVictory": {
+      "name": "Nafs Triumph",
+      "description": "Gave in to temptation",
+      "xpPenalty": -25,
+      "statPenalty": { "faith": -2 },
+      "icon": "fas fa-frown"
+    }
+  },
+  "prayerTimes": {
+    "default": {
+      "fajr": { "hour": 5, "minute": 30 },
+      "dhuhr": { "hour": 12, "minute": 30 },
+      "asr": { "hour": 15, "minute": 30 },
+      "maghrib": { "hour": 18, "minute": 30 },
+      "isha": { "hour": 20, "minute": 0 }
+    }
+  },
+  "quotes": [
+    "The strong do not need to prove themselves to the weak.",
+    "Growth comes from facing challenges that seem impossible.",
+    "Every level gained is a step closer to your true potential.",
+    "The system rewards those who push beyond their limits.",
+    "True strength is not in the body, but in the spirit that refuses to yield.",
+    "Knowledge without action is like a sword that is never drawn.",
+    "The believer's struggle is both internal and external.",
+    "Each prayer is a chance to reset and refocus your purpose."
+  ],
+  "levelTitles": {
+    "1-9": "Awakened Novice",
+    "10-24": "Rising Hunter",
+    "25-49": "Shadow Walker",
+    "50-74": "Elite Warrior",
+    "75-99": "Shadow Monarch",
+    "100+": "Sovereign of Shadows"
+  }
+}

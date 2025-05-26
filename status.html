@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status - Solo Leveling System</title>
+    <meta name="theme-color" content="#00d4ff">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glitch.css">
+    <link rel="stylesheet" href="css/status.css">
+</head>
+<body class="status-body">
+    <!-- Status Page Header -->
+    <header class="status-header">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i>
+            <span>BACK</span>
+        </button>
+        <h1 class="glitch-text" data-text="DETAILED STATUS">DETAILED STATUS</h1>
+    </header>
+
+    <!-- Detailed Status Interface -->
+    <main class="detailed-status">
+        <!-- Player Overview -->
+        <section class="player-overview">
+            <div class="overview-frame">
+                <div class="player-avatar">
+                    <div class="avatar-glow"></div>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="player-details">
+                    <h2 class="player-name" id="detailPlayerName">Player</h2>
+                    <div class="player-title" id="playerTitle">The Awakened One</div>
+                    <div class="player-level-detail">
+                        <span>LEVEL</span>
+                        <span class="level-number" id="detailPlayerLevel">1</span>
+                    </div>
+                </div>
+                <div class="rank-info">
+                    <div class="rank-badge">
+                        <div class="rank-text" id="playerRank">E-RANK</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Stats Grid -->
+        <section class="detailed-stats">
+            <div class="stats-container">
+                <!-- Primary Stats -->
+                <div class="stat-section">
+                    <h3 class="section-title">PRIMARY ATTRIBUTES</h3>
+                    <div class="stat-grid">
+                        <div class="detailed-stat-card strength">
+                            <div class="stat-header">
+                                <i class="fas fa-fist-raised"></i>
+                                <span class="stat-name">STRENGTH</span>
+                            </div>
+                            <div class="stat-main-value" id="detailStrength">10</div>
+                            <div class="stat-breakdown">
+                                <div class="base-stat">Base: <span id="baseStrength">10</span></div>
+                                <div class="bonus-stat">Bonus: <span id="bonusStrength">+0</span></div>
+                                <div class="equipment-stat">Equipment: <span id="equipStrength">+0</span></div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="strengthProgress"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="strengthExp">0</span> / <span id="strengthExpMax">100</span> EXP
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detailed-stat-card agility">
+                            <div class="stat-header">
+                                <i class="fas fa-running"></i>
+                                <span class="stat-name">AGILITY</span>
+                            </div>
+                            <div class="stat-main-value" id="detailAgility">10</div>
+                            <div class="stat-breakdown">
+                                <div class="base-stat">Base: <span id="baseAgility">10</span></div>
+                                <div class="bonus-stat">Bonus: <span id="bonusAgility">+0</span></div>
+                                <div class="equipment-stat">Equipment: <span id="equipAgility">+0</span></div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="agilityProgress"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="agilityExp">0</span> / <span id="agilityExpMax">100</span> EXP
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detailed-stat-card intelligence">
+                            <div class="stat-header">
+                                <i class="fas fa-brain"></i>
+                                <span class="stat-name">INTELLIGENCE</span>
+                            </div>
+                            <div class="stat-main-value" id="detailIntelligence">10</div>
+                            <div class="stat-breakdown">
+                                <div class="base-stat">Base: <span id="baseIntelligence">10</span></div>
+                                <div class="bonus-stat">Bonus: <span id="bonusIntelligence">+0</span></div>
+                                <div class="equipment-stat">Equipment: <span id="equipIntelligence">+0</span></div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="intelligenceProgress"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="intelligenceExp">0</span> / <span id="intelligenceExpMax">100</span> EXP
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detailed-stat-card endurance">
+                            <div class="stat-header">
+                                <i class="fas fa-heart"></i>
+                                <span class="stat-name">ENDURANCE</span>
+                            </div>
+                            <div class="stat-main-value" id="detailEndurance">10</div>
+                            <div class="stat-breakdown">
+                                <div class="base-stat">Base: <span id="baseEndurance">10</span></div>
+                                <div class="bonus-stat">Bonus: <span id="bonusEndurance">+0</span></div>
+                                <div class="equipment-stat">Equipment: <span id="equipEndurance">+0</span></div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="enduranceProgress"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="enduranceExp">0</span> / <span id="enduranceExpMax">100</span> EXP
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detailed-stat-card faith">
+                            <div class="stat-header">
+                                <i class="fas fa-crescent-moon"></i>
+                                <span class="stat-name">FAITH</span>
+                            </div>
+                            <div class="stat-main-value" id="detailFaith">10</div>
+                            <div class="stat-breakdown">
+                                <div class="base-stat">Base: <span id="baseFaith">10</span></div>
+                                <div class="bonus-stat">Bonus: <span id="bonusFaith">+0</span></div>
+                                <div class="equipment-stat">Equipment: <span id="equipFaith">+0</span></div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="faithProgress"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="faithExp">0</span> / <span id="faithExpMax">100</span> EXP
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Stats -->
+                <div class="stat-section">
+                    <h3 class="section-title">DERIVED ATTRIBUTES</h3>
+                    <div class="secondary-stats-grid">
+                        <div class="secondary-stat">
+                            <div class="sec-stat-icon"><i class="fas fa-heart-pulse"></i></div>
+                            <div class="sec-stat-info">
+                                <div class="sec-stat-name">HEALTH POINTS</div>
+                                <div class="sec-stat-value" id="healthPoints">100</div>
+                            </div>
+                        </div>
+
+                        <div class="secondary-stat">
+                            <div class="sec-stat-icon"><i class="fas fa-bolt"></i></div>
+                            <div class="sec-stat-info">
+                                <div class="sec-stat-name">MANA POINTS</div>
+                                <div class="sec-stat-value" id="manaPoints">50</div>
+                            </div>
+                        </div>
+
+                        <div class="secondary-stat">
+                            <div class="sec-stat-icon"><i class="fas fa-shield-alt"></i></div>
+                            <div class="sec-stat-info">
+                                <div class="sec-stat-name">DEFENSE</div>
+                                <div class="sec-stat-value" id="defense">5</div>
+                            </div>
+                        </div>
+
+                        <div class="secondary-stat">
+                            <div class="sec-stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sec-stat-info">
+                                <div class="sec-stat-name">SPEED</div>
+                                <div class="sec-stat-value" id="speed">10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements Section -->
+                <div class="stat-section">
+                    <h3 class="section-title">ACHIEVEMENTS</h3>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <div class="achievement-card locked">
+                            <div class="achievement-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">First Steps</div>
+                                <div class="achievement-desc">Complete your first quest</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/status-engine.js"></script>
+    <script src="audio.js"></script>
+    <script>
+        // Initialize detailed status page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDetailedStatus();
+        });
+
+        function loadDetailedStatus() {
+            const playerData = GameStorage.getPlayerData();
+            const stats = GameStorage.getStats();
+            
+            // Update player info
+            document.getElementById('detailPlayerName').textContent = playerData.name;
+            document.getElementById('detailPlayerLevel').textContent = playerData.level;
+            
+            // Update rank based on level
+            const rank = getRankByLevel(playerData.level);
+            document.getElementById('playerRank').textContent = rank;
+            
+            // Update detailed stats
+            updateDetailedStats(stats);
+            
+            // Update secondary stats
+            updateSecondaryStats(stats);
+        }
+
+        function getRankByLevel(level) {
+            if (level < 10) return 'E-RANK';
+            if (level < 25) return 'D-RANK';
+            if (level < 50) return 'C-RANK';
+            if (level < 75) return 'B-RANK';
+            if (level < 100) return 'A-RANK';
+            return 'S-RANK';
+        }
+
+        function updateDetailedStats(stats) {
+            const statNames = ['strength', 'agility', 'intelligence', 'endurance', 'faith'];
+            
+            statNames.forEach(statName => {
+                const statValue = stats[statName] || 10;
+                const baseValue = Math.floor(statValue * 0.8);
+                const bonusValue = Math.floor(statValue * 0.2);
+                
+                document.getElementById(`detail${statName.charAt(0).toUpperCase() + statName.slice(1)}`).textContent = statValue;
+                document.getElementById(`base${statName.charAt(0).toUpperCase() + statName.slice(1)}`).textContent = baseValue;
+                document.getElementById(`bonus${statName.charAt(0).toUpperCase() + statName.slice(1)}`).textContent = `+${bonusValue}`;
+                document.getElementById(`equip${statName.charAt(0).toUpperCase() + statName.slice(1)}`).textContent = '+0';
+                
+                // Update progress bars (simulated stat experience)
+                const expValue = (statValue % 10) * 10;
+                const progressFill = document.getElementById(`${statName}Progress`);
+                if (progressFill) {
+                    progressFill.style.width = `${expValue}%`;
+                }
+                
+                document.getElementById(`${statName}Exp`).textContent = expValue;
+                document.getElementById(`${statName}ExpMax`).textContent = '100';
+            });
+        }
+
+        function updateSecondaryStats(stats) {
+            const health = (stats.endurance || 10) * 10;
+            const mana = (stats.intelligence || 10) * 5;
+            const defense = Math.floor((stats.strength || 10) / 2);
+            const speed = stats.agility || 10;
+            
+            document.getElementById('healthPoints').textContent = health;
+            document.getElementById('manaPoints').textContent = mana;
+            document.getElementById('defense').textContent = defense;
+            document.getElementById('speed').textContent = speed;
+        }
+    </script>
+</body>
+</html>
